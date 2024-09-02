@@ -292,6 +292,105 @@ make: *** [/home/cpputest/build/MakefileWorker.mk:458: all] Error 1
 <details>
 <summary>
 
+## Run Tests with an Installed Tool-Chain MSYS and Cmake
+
+</summary>
+
+### 1) Install gcc tool-chain
+
+**Windows MSYS2**
+
+In windows, install MSYS2 (https://www.msys2.org).
+
+With filemanger `pacman` in `MSYS2` install one of enviroments. Here `MINGW64` is used.
+
+### 2) Download, Install and build CppUTest
+
+Download the latest from cpputest.org or git clone from git repo:
+
+```git
+git clone https://github.com/cpputest/cpputest.git
+```
+
+Please install it as follows:
+
+```
+cd /close-to-your-production-code/cpputest
+mkdir cpputest_build_gcc
+cmake -B cpputest_build_gcc -G "MSYS Makefiles"
+cmake --build cpputest_build_gcc
+```
+
+You should see CppUTest’s tests run.  If you get build errors, they are often easy to fix by looking at the error message.  Often it is a matter of disabling some warning.  You can also check with me or the cpputest google group.  Please let me know if there is a need for a change these directions.
+
+### 3) Define CPPUTEST_HOME
+
+Point  CPPUTEST_HOME to the root directory of CppUTest.  If you don't, the starter project makefile will not be able to find MakefileWorker.mk and the needed include and library files.
+
+### 4) Build the starter project
+
+From a terminal window, change the directory to the root of the starter project.
+
+```
+cd /close-to-your-production-code/cpputest-starter-project
+```
+
+There you can run file `AllCmake.bat`
+
+or run commands from `PowerShell` or `cmd.exe`:
+
+```
+cmake -G "MSYS Makefiles" -B cpputest_build_test -DCOMPILE_TESTS=ON
+cmake --build cpputest_build_test
+bin\fooApp_tests.exe
+```
+You will see something like that:
+
+```
+cpputest-starter-project-cmake>cmake -G "MSYS Makefiles" -B cpputest_build_test -DCOMPILE_TESTS=ON
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/msys64/usr/bin/cc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/msys64/usr/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Using CppUTest home: \cpputest
+-- Configuring done (7.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /cpputest-starter-project-cmake/cpputest_build_test
+
+/cpputest-starter-project-cmake>cmake --build cpputest_build_test
+[ 16%] Building C object CMakeFiles/fooAppLib.dir/example-src/Example.c.obj
+[ 33%] Linking C static library /cpputest-starter-project-cmake/lib/libfooAppLib.a
+[ 33%] Built target fooAppLib
+[ 50%] Building CXX object tests/CMakeFiles/fooApp_tests.dir/ExampleTest.cpp.obj
+[ 66%] Building CXX object tests/CMakeFiles/fooApp_tests.dir/MyFirstTest.cpp.obj
+[ 83%] Building CXX object tests/CMakeFiles/fooApp_tests.dir/AllTests.cpp.obj
+[100%] Linking CXX executable /cpputest-starter-project-cmake/bin/fooApp_tests.exe
+[100%] Built target fooApp_tests
+
+cpputest-starter-project-cmake>bin\fooApp_tests.exe
+.
+/cpputest-starter-project-cmake/tests/MyFirstTest.cpp:23: error: Failure in TEST(MyCode, test1)
+        Your test is running! Now delete this line and watch your test pass.
+
+.
+Errors (1 failures, 2 tests, 2 ran, 2 checks, 0 ignored, 0 filtered out, 3 ms)
+```
+
+</details>
+
+----
+
+<details>
+<summary>
+
 ## Make MyFirstTest Pass
 
 </summary>
