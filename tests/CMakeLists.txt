@@ -21,16 +21,26 @@ set(TEST_SOURCES
     AllTests.cpp
 )
 
-# (3) Take care of include directories
-include_directories(${CPPUTEST_INCLUDE_DIRS} ../example-include/)
-link_directories(${CPPUTEST_LIBRARIES})
-
-
-# (4) Build the unit tests objects and link then with the app library
+# (3) Build the unit tests objects and link then with the app library
 add_executable(${TEST_APP_NAME} ${TEST_SOURCES})
-target_link_libraries(${TEST_APP_NAME} ${APP_LIB_NAME} ${CPPUTEST_LDFLAGS})
 
-# (5) Run the test once the build is done
+target_include_directories(${TEST_APP_NAME}
+    PUBLIC
+    ${CPPUTEST_INCLUDE_DIRS}
+    ${SOURCE_DIR}/example-include/
+    )
+
+target_link_directories(${TEST_APP_NAME}
+    PUBLIC
+    ${CPPUTEST_LIBRARIES}
+    )
+
+target_link_libraries(${TEST_APP_NAME}
+    ${APP_LIB_NAME}
+    ${CPPUTEST_LDFLAGS}
+    )
+    
+# (4) Run the test once the build is done
 # If there is an error, the executable file is deleted
 # Если есть ошибка, то удаляет исполняемый файл
 # It's inconvenient, so the launch is commented out
