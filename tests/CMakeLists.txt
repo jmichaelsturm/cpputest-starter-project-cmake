@@ -2,11 +2,11 @@
 if(DEFINED ENV{CPPUTEST_HOME})
     message(STATUS "Using CppUTest home: $ENV{CPPUTEST_HOME}")
     set(CPPUTEST_INCLUDE_DIRS $ENV{CPPUTEST_HOME}/include)
-    set(CPPUTEST_LIBRARIES 
-        $ENV{CPPUTEST_HOME}/cpputest_build_MSYS/src/CppUTest
-        $ENV{CPPUTEST_HOME}/cpputest_build_MSYS/src/CppUTestExt
+    set(CPPUTEST_LIBRARIES
+        $ENV{CPPUTEST_HOME}/lib/libCppUTest.a
+        $ENV{CPPUTEST_HOME}/lib/libCppUTestExt.a
         )
-    set(CPPUTEST_LDFLAGS CppUTest CppUTestExt)
+    set(CPPUTEST_LDFLAGS libCppUTest.a libCppUTestExt.a)
 else()
     find_package(PkgConfig REQUIRED)
     pkg_search_module(CPPUTEST REQUIRED cpputest>=3.8)
@@ -27,24 +27,15 @@ add_executable(${TEST_APP_NAME} ${TEST_SOURCES})
 target_include_directories(${TEST_APP_NAME}
     PUBLIC
     ${CPPUTEST_INCLUDE_DIRS}
-    ${SOURCE_DIR}/example-include/
-    )
-
-target_link_directories(${TEST_APP_NAME}
-    PUBLIC
-    ${CPPUTEST_LIBRARIES}
+    ${SOURCE_DIR}/include/
     )
 
 target_link_libraries(${TEST_APP_NAME}
+    PUBLIC
     ${APP_LIB_NAME}
-    ${CPPUTEST_LDFLAGS}
+    ${CPPUTEST_LIBRARIES}
     )
-    
-# (4) Run the test once the build is done
-# If there is an error, the executable file is deleted
-# Если есть ошибка, то удаляет исполняемый файл
-# It's inconvenient, so the launch is commented out
-# Неудобно, поэтому запуск закомментирован
-#add_custom_command(TARGET ${TEST_APP_NAME} POST_BUILD
-#    COMMAND ./../../bin/${TEST_APP_NAME}
-#    VERBATIM)
+
+add_custom_command(TARGET ${TEST_APP_NAME} POST_BUILD
+   COMMAND ${TEST_APP_NAME}
+   VERBATIM)
