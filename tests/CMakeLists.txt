@@ -36,6 +36,8 @@ target_link_libraries(${TEST_APP_NAME}
     ${CPPUTEST_LIBRARIES}
     )
 
-add_custom_command(TARGET ${TEST_APP_NAME} POST_BUILD
-   COMMAND ${TEST_APP_NAME}
-   VERBATIM)
+add_custom_target(RunTests ALL
+    COMMAND ${TEST_APP_NAME}
+    COMMENT "Running unit tests."
+    VERBATIM
+    )
