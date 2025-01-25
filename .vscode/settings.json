@@ -1,0 +1,6 @@
+{
+    "cmake.configureOnEdit": false,
+    "cmake.configureOnOpen": false,
+    "cmake.enableAutomaticKitScan": false,
+    "cmake.automaticReconfigure": false
+}
